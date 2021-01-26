@@ -1,0 +1,34 @@
+<?php
+/**
+ * @var Inchoo\ProductBookmark\Block\BookmarkList\Details $block
+ */
+
+?>
+<?php if (!empty($block->getBookmarkedProducts())) : ?>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th><?= $block->escapeHtml(__("Name")) ?></th>
+            <th><?= $block->escapeHtml(__("Price")) ?></th>
+            <th><?= $block->escapeHtml(__("Delete")) ?></th>
+        </tr>
+        <?php foreach ($block->getBookmarkedProducts() as $key => $product) : ?>
+            <tr>
+                <td><?= $block->escapeHtml($product->getName()) ?></td>
+                <td><?= $block->escapeHtml($product->getPrice()) ?></td>
+                <td>
+                    <form
+                        action="<?= $block->escapeUrl($block->getUrl("inchoo_bookmark/bookmark/delete")) ?>"
+                        method="post"
+                    <?= $block->getBlockHtml('formkey') ?>
+                    <input type="hidden" name="bookmarkId" value="<?=$block->escapeHtml($key)?>">
+                    <button type="submit" class="action submit primary">
+                        <span><?=$block->escapeHtml(__('Delete'))?></span>
+                    </button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>

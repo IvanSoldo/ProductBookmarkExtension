@@ -1,0 +1,67 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ * @var Inchoo\ProductBookmark\ViewModel\BookmarkListViewModel $viewModel
+ */
+$viewModel = $block->getData('view_model');
+$bookmarkLists = $viewModel->getBookmarkLists();
+?>
+<h2>Create new Bookmark List</h2>
+<br>
+<form
+    id="form-validate"
+    action="<?= $block->escapeUrl($block->getUrl('inchoo_bookmark/bookmarklist/new')) ?>"
+    method="post"
+    data-hasrequired="* Required Fields"
+    data-mage-init='{"validation":{}}'>
+    <?= $block->getBlockHtml('formkey') ?>
+    <div class="field title required">
+        <label class="label" for="title"><span>
+<?=$block->escapeHtml(__('Title'))?></span></label>
+        <div class="control">
+            <input
+                id="title"
+                type="text"
+                name="title"
+                data-validate="{required:true}"/>
+        </div>
+    </div>
+    <br>
+    <button type="submit" class="action submit primary">
+        <span><?=$block->escapeHtml(__('Create List'))?></span>
+    </button>
+
+</form>
+
+<br>
+<br>
+
+<?php if (!empty($bookmarkLists)) : ?>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th><?= $block->escapeHtml(__("Title")) ?></th>
+            <th><?= $block->escapeHtml(__("Delete")) ?></th>
+            <th><?= $block->escapeHtml(__("Details")) ?></th>
+        </tr>
+        <?php foreach ($bookmarkLists as $bookmarkList) : ?>
+            <tr>
+                <td><?= $block->escapeHtml($bookmarkList->getBookmarkListTitle()) ?></td>
+                <td><?php if ($bookmarkList->getIsDeletable() == 1) : ?>
+                        <a href="<?= $block->escapeUrl($block->getUrl('inchoo_bookmark/bookmarklist/delete', ['id' => $bookmarkList->getId()])); ?>"
+                           class="action submit primary">
+                            <?= $block->escapeHtml(__('Delete')); ?>
+                        </a>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <a href="<?= $block->escapeUrl($block->getUrl('inchoo_bookmark/bookmarklist/details/', ['id' => $bookmarkList->getId()])); ?>"
+                       class="action submit primary">
+                        <?= $block->escapeHtml(__('Details')); ?>
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>

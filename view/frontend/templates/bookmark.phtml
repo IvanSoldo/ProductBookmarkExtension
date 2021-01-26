@@ -1,0 +1,22 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Inchoo\ProductBookmark\ViewModel\BookmarkListViewModel $viewModel */
+$viewModel = $block->getData('view_model');
+$bookmarkLists = $viewModel->getBookmarkLists();
+?>
+<?php if ($viewModel->isLoggedIn()) :?>
+<form action="<?= $block->escapeHtml($block->getUrl('inchoo_bookmark/bookmark/save')) ?>" method="post">
+    <?= $block->getBlockHtml('formkey') ?>
+    <br>
+    <br>
+    <select name="bookmarkList" data-toggle="dropdown">
+        <?php foreach ($bookmarkLists as $bookmarkList) : ?>
+            <option value="<?=$block->escapeHtml($bookmarkList->getId())?>"><?=$block->escapeHtml($bookmarkList->getBookmarkListTitle())?></option>
+        <?php endforeach; ?>
+    </select>
+    <br>
+    <br>
+    <input class="action submit primary" type="submit" value="Bookmark">
+    <input type="hidden" name="product" id="product">
+</form>
+<?php endif; ?>
