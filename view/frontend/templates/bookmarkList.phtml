@@ -47,12 +47,11 @@ $bookmarkLists = $viewModel->getBookmarkLists();
         <?php foreach ($bookmarkLists as $bookmarkList) : ?>
             <tr>
                 <td><?= $block->escapeHtml($bookmarkList->getBookmarkListTitle()) ?></td>
-                <td><?php if ($bookmarkList->getIsDeletable() == true) : ?>
-                        <a href="<?= $block->escapeUrl($block->getUrl('inchoo_bookmark/bookmarklist/delete', ['id' => $bookmarkList->getId()])); ?>"
-                           class="action submit primary">
-                            <?= $block->escapeHtml(__('Delete')); ?>
-                        </a>
-                    <?php endif; ?>
+                <td>
+                    <a href="<?= $block->escapeUrl($block->getUrl('inchoo_bookmark/bookmarklist/delete', ['id' => $bookmarkList->getId()])); ?>"
+                       class="action submit primary">
+                        <?= $block->escapeHtml(__('Delete')); ?>
+                    </a>
                 </td>
                 <td>
                     <a href="<?= $block->escapeUrl($block->getUrl('inchoo_bookmark/bookmarklist/details/', ['id' => $bookmarkList->getId()])); ?>"

@@ -4,7 +4,6 @@
     <table name="inchoo_product_bookmark_list" resource="default" comment="Inchoo Product Bookmark List" charset="utf8" collation="utf8_general_ci">
         <column name="bookmark_list_id" xsi:type="int" unsigned="true" identity="true" comment="Bookmark List ID" nullable="false"/>
         <column name="bookmark_list_title" xsi:type="varchar" nullable="false" length="124" comment="Bookmark List Title"/>
-        <column name="is_deletable" xsi:type="boolean" nullable="false" default="true" comment="Is the list deletable"/>
         <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false" identity="false"
                 comment="Customer ID"/>
         <column name="created_at" xsi:type="datetime" default="CURRENT_TIMESTAMP"/>

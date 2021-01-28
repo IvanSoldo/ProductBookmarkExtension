@@ -8,12 +8,14 @@ use Inchoo\ProductBookmark\Api\BookmarkListRepositoryInterface;
 use Inchoo\ProductBookmark\Api\BookmarkRepositoryInterface;
 use Inchoo\ProductBookmark\Api\Data\BookmarkInterface;
 use Inchoo\ProductBookmark\Api\Data\BookmarkInterfaceFactory;
+use Inchoo\ProductBookmark\Api\Data\BookmarkListInterface;
+use Inchoo\ProductBookmark\Api\Data\BookmarkListInterfaceFactory;
 use Inchoo\ProductBookmark\Controller\Bookmark;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Controller\ResultFactory;
 
 class Save extends Bookmark
 {
@@ -41,6 +43,10 @@ class Save extends Bookmark
      * @var BookmarkListRepositoryInterface
      */
     private $bookmarkListRepository;
+    /**
+     * @var BookmarkListInterfaceFactory
+     */
+    private $bookmarkListModelFactory;
 
     /**
      * Save constructor.
@@ -49,9 +55,9 @@ class Save extends Bookmark
      * @param BookmarkRepositoryInterface $bookmarkRepository
      * @param BookmarkInterfaceFactory $bookmarkModelFactory
      * @param StoreManagerInterface $storeManager
-     * @param Validator $validator
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param BookmarkListRepositoryInterface $bookmarkListRepository
+     * @param BookmarkListInterfaceFactory $bookmarkListModelFactory
      */
     public function __construct(
         Context $context,
@@ -60,7 +66,8 @@ class Save extends Bookmark
         BookmarkInterfaceFactory $bookmarkModelFactory,
         StoreManagerInterface $storeManager,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        BookmarkListRepositoryInterface $bookmarkListRepository
+        BookmarkListRepositoryInterface $bookmarkListRepository,
+        BookmarkListInterfaceFactory $bookmarkListModelFactory
     ) {
         parent::__construct($context, $customerSession);
         $this->bookmarkRepository = $bookmarkRepository;
@@ -68,6 +75,7 @@ class Save extends Bookmark
         $this->storeManager = $storeManager;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->bookmarkListRepository = $bookmarkListRepository;
+        $this->bookmarkListModelFactory = $bookmarkListModelFactory;
     }
 
     /**
@@ -80,19 +88,23 @@ class Save extends Bookmark
         $productId = (int)$this->getRequest()->getParam('product');
         $websiteId = (int)$this->storeManager->getStore()->getWebsiteId();
 
-        if (!$bookmarkListId || !$productId) {
+        if (!$productId) {
             return $this->redirectToList();
         }
 
-        try {
-            $bookmarkList = $this->bookmarkListRepository->getById($bookmarkListId);
-        } catch (\Exception $exception) {
-            $this->messageManager->addErrorMessage(__('Product could not be saved!'));
-            return $this->redirectToList();
+        if (!$bookmarkListId) {
+            $bookmarkList = $this->createNewBookmarkList();
+        } else {
+            try {
+                $bookmarkList = $this->bookmarkListRepository->getById($bookmarkListId);
+            } catch (\Exception $exception) {
+                $this->messageManager->addErrorMessage(__('Product could not be saved!'));
+                return $this->redirectToList();
+            }
         }
 
         $bookmark = $this->bookmarkModelFactory->create();
-        $bookmark->setBookmarkListId($bookmarkListId);
+        $bookmark->setBookmarkListId((int)$bookmarkList->getId());
         $bookmark->setProductId($productId);
         $bookmark->setWebsiteId($websiteId);
 
@@ -114,7 +126,9 @@ class Save extends Bookmark
         }
 
         $this->messageManager->addSuccessMessage(__('Bookmark added!'));
-        return $this->redirectToList();
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+        $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+        return $resultRedirect;
     }
 
     /**
@@ -132,5 +146,19 @@ class Save extends Bookmark
         $searchCriteria = $this->searchCriteriaBuilder->create();
 
         return (bool)$this->bookmarkRepository->getList($searchCriteria)->getTotalCount();
+    }
+
+    /**
+     * If user doesnt have any bookmark lists, create a default one
+     *
+     * @return BookmarkListInterface
+     */
+    private function createNewBookmarkList()
+    {
+        $bookmarkList = $this->bookmarkListModelFactory->create();
+        $bookmarkList->setBookmarkListTitle("Default");
+        $bookmarkList->setCustomerId((int)$this->customerSession->getCustomerId());
+        $this->bookmarkListRepository->save($bookmarkList);
+        return $bookmarkList;
     }
 }
