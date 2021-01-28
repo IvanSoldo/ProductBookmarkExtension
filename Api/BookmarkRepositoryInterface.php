@@ -20,10 +20,10 @@ interface BookmarkRepositoryInterface
 
     /**
      * @param BookmarkInterface $bookmark
-     * @return BookmarkInterface
+     * @return bool
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function save(BookmarkInterface $bookmark): BookmarkInterface;
+    public function save(BookmarkInterface $bookmark): bool;
 
     /**
      * @param BookmarkInterface $bookmark

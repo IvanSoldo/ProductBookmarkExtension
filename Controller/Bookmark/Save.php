@@ -14,6 +14,7 @@ use Inchoo\ProductBookmark\Controller\Bookmark;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Controller\ResultFactory;
 
@@ -166,7 +167,12 @@ class Save extends Bookmark
         $bookmarkList = $this->bookmarkListModelFactory->create();
         $bookmarkList->setBookmarkListTitle("Default");
         $bookmarkList->setCustomerId((int)$this->customerSession->getCustomerId());
-        $this->bookmarkListRepository->save($bookmarkList);
+        try {
+            $this->bookmarkListRepository->save($bookmarkList);
+        } catch (LocalizedException $e) {
+            $this->logger->critical('Error message', ['exception' => $e]);
+            $this->messageManager->addErrorMessage(__('Something went wrong! Please contact customer support'));
+        }
         return $bookmarkList;
     }
 }

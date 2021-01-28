@@ -21,10 +21,10 @@ interface BookmarkListRepositoryInterface
 
     /**
      * @param BookmarkListInterface $bookmarkList
-     * @return BookmarkListInterface
+     * @return bool
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function save(BookmarkListInterface $bookmarkList): BookmarkListInterface;
+    public function save(BookmarkListInterface $bookmarkList): bool;
 
     /**
      * @param BookmarkListInterface $bookmarkList

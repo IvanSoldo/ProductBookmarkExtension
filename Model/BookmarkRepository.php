@@ -83,17 +83,17 @@ class BookmarkRepository implements BookmarkRepositoryInterface
 
     /**
      * @param BookmarkInterface $bookmark
-     * @return BookmarkInterface
+     * @return bool
      * @throws CouldNotSaveException
      */
-    public function save(BookmarkInterface $bookmark): BookmarkInterface
+    public function save(BookmarkInterface $bookmark): bool
     {
         try {
             $this->bookmarkResource->save($bookmark);
         } catch (\Exception $exception) {
             throw new CouldNotSaveException(__($exception->getMessage()));
         }
-        return $bookmark;
+        return true;
     }
 
     /**
