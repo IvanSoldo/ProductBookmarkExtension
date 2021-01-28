@@ -1,34 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Inchoo\ProductBookmark\Api;
 
 use Inchoo\ProductBookmark\Api\Data\BookmarkListInterface;
+use Inchoo\ProductBookmark\Api\Data\BookmarkListSearchResultsInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResultsInterface;
 
 interface BookmarkListRepositoryInterface
 {
 
     /**
      * @param int $bookmarkListId
-     * @return mixed
+     * @return BookmarkListInterface
      */
-    public function getById(int $bookmarkListId);
+    public function getById(int $bookmarkListId): BookmarkListInterface;
 
     /**
      * @param BookmarkListInterface $bookmarkList
-     * @return mixed
+     * @return BookmarkListInterface
      */
-    public function save(BookmarkListInterface $bookmarkList);
+    public function save(BookmarkListInterface $bookmarkList): BookmarkListInterface;
 
     /**
      * @param BookmarkListInterface $bookmarkList
-     * @return mixed
+     * @return bool
      */
-    public function delete(BookmarkListInterface $bookmarkList);
+    public function delete(BookmarkListInterface $bookmarkList): bool;
 
     /**
      * @param SearchCriteriaInterface $searchCriteria
-     * @return mixed
+     * @return BookmarkListSearchResultsInterface
      */
-    public function getList(SearchCriteriaInterface $searchCriteria);
+    public function getList(SearchCriteriaInterface $searchCriteria): SearchResultsInterface;
 }

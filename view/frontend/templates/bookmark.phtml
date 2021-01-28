@@ -4,7 +4,6 @@
 $viewModel = $block->getData('view_model');
 $bookmarkLists = $viewModel->getBookmarkLists();
 ?>
-<?php if ($viewModel->isLoggedIn()) :?>
 <form action="<?= $block->escapeHtml($block->getUrl('inchoo_bookmark/bookmark/save')) ?>" method="post">
     <?= $block->getBlockHtml('formkey') ?>
     <br>
@@ -19,4 +18,3 @@ $bookmarkLists = $viewModel->getBookmarkLists();
     <input class="action submit primary" type="submit" value="Bookmark">
     <input type="hidden" name="product" id="product">
 </form>
-<?php endif; ?>

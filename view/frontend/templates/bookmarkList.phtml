@@ -17,7 +17,7 @@ $bookmarkLists = $viewModel->getBookmarkLists();
     <?= $block->getBlockHtml('formkey') ?>
     <div class="field title required">
         <label class="label" for="title"><span>
-<?=$block->escapeHtml(__('Title'))?></span></label>
+<?= $block->escapeHtml(__('Title')) ?></span></label>
         <div class="control">
             <input
                 id="title"
@@ -28,7 +28,7 @@ $bookmarkLists = $viewModel->getBookmarkLists();
     </div>
     <br>
     <button type="submit" class="action submit primary">
-        <span><?=$block->escapeHtml(__('Create List'))?></span>
+        <span><?= $block->escapeHtml(__('Create List')) ?></span>
     </button>
 
 </form>
@@ -47,7 +47,7 @@ $bookmarkLists = $viewModel->getBookmarkLists();
         <?php foreach ($bookmarkLists as $bookmarkList) : ?>
             <tr>
                 <td><?= $block->escapeHtml($bookmarkList->getBookmarkListTitle()) ?></td>
-                <td><?php if ($bookmarkList->getIsDeletable() == 1) : ?>
+                <td><?php if ($bookmarkList->getIsDeletable() == true) : ?>
                         <a href="<?= $block->escapeUrl($block->getUrl('inchoo_bookmark/bookmarklist/delete', ['id' => $bookmarkList->getId()])); ?>"
                            class="action submit primary">
                             <?= $block->escapeHtml(__('Delete')); ?>

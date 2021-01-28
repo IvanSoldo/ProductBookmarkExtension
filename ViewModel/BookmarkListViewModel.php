@@ -13,13 +13,22 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
 class BookmarkListViewModel implements ArgumentInterface
 {
 
+    /**
+     * @var SearchCriteriaBuilder
+     */
     private $searchCriteriaBuilder;
 
+    /**
+     * @var BookmarkListRepositoryInterface
+     */
     private $bookmarkListRepository;
 
+    /**
+     * @var Session
+     */
     private $session;
 
-    
+
     /**
      * BookmarkListViewModel constructor.
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -48,14 +57,4 @@ class BookmarkListViewModel implements ArgumentInterface
         return $this->bookmarkListRepository->getList($searchCriteria)->getItems();
     }
 
-    /**
-     * @return bool
-     */
-    public function isLoggedIn()
-    {
-        if ($this->session->getCustomerId()) {
-            return true;
-        }
-        return false;
-    }
 }

@@ -17,17 +17,29 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class Save extends Bookmark
 {
-
+    /**
+     * @var BookmarkRepositoryInterface
+     */
     private $bookmarkRepository;
 
+    /**
+     * @var BookmarkInterfaceFactory
+     */
     private $bookmarkModelFactory;
 
+    /**
+     * @var StoreManagerInterface
+     */
     private $storeManager;
 
-    private $validator;
-
+    /**
+     * @var SearchCriteriaBuilder
+     */
     private $searchCriteriaBuilder;
 
+    /**
+     * @var BookmarkListRepositoryInterface
+     */
     private $bookmarkListRepository;
 
     /**
@@ -47,7 +59,6 @@ class Save extends Bookmark
         BookmarkRepositoryInterface $bookmarkRepository,
         BookmarkInterfaceFactory $bookmarkModelFactory,
         StoreManagerInterface $storeManager,
-        Validator $validator,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         BookmarkListRepositoryInterface $bookmarkListRepository
     ) {
@@ -55,7 +66,6 @@ class Save extends Bookmark
         $this->bookmarkRepository = $bookmarkRepository;
         $this->bookmarkModelFactory = $bookmarkModelFactory;
         $this->storeManager = $storeManager;
-        $this->validator = $validator;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->bookmarkListRepository = $bookmarkListRepository;
     }
@@ -66,13 +76,13 @@ class Save extends Bookmark
      */
     public function execute()
     {
-        if (!$this->validator->validate($this->getRequest())) {
-            return $this->redirectToList();
-        }
-
         $bookmarkListId = (int)$this->getRequest()->getParam('bookmarkList');
         $productId = (int)$this->getRequest()->getParam('product');
         $websiteId = (int)$this->storeManager->getStore()->getWebsiteId();
+
+        if (!$bookmarkListId || !$productId) {
+            return $this->redirectToList();
+        }
 
         try {
             $bookmarkList = $this->bookmarkListRepository->getById($bookmarkListId);
@@ -86,7 +96,7 @@ class Save extends Bookmark
         $bookmark->setProductId($productId);
         $bookmark->setWebsiteId($websiteId);
 
-        if (!$this->checkBookmark($bookmark)) {
+        if ($this->checkBookmark($bookmark)) {
             $this->messageManager->addErrorMessage(__('Product already bookmarked!'));
             return $this->redirectToList();
         }
@@ -121,9 +131,6 @@ class Save extends Bookmark
             ->addFilter(BookmarkInterface::BOOKMARK_LIST_ID, $bookmark->getBookmarkListId(), 'eq');
         $searchCriteria = $this->searchCriteriaBuilder->create();
 
-        if (empty($this->bookmarkRepository->getList($searchCriteria)->getItems())) {
-            return true;
-        }
-        return false;
+        return (bool)$this->bookmarkRepository->getList($searchCriteria)->getTotalCount();
     }
 }

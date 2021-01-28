@@ -3,7 +3,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <container name="bookmark-container" output="1">
-            <block class="Magento\Framework\View\Element\Template" name="bookmarkList"
+            <block name="inchoo_bookmark_list"
                    template="Inchoo_ProductBookmark::bookmark.phtml">
                 <arguments>
                     <argument name="view_model" xsi:type="object">

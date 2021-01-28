@@ -14,6 +14,9 @@ use Magento\Framework\View\Result\LayoutFactory as LayoutResultFactory;
 class Index extends Action
 {
 
+    /**
+     * @var LayoutResultFactory
+     */
     private $layoutResultFactory;
 
     /**
@@ -33,7 +36,6 @@ class Index extends Action
     public function execute()
     {
         $result = $this->layoutResultFactory->create();
-        $result->addHandle('inchoo_ajax_bookmark');
         return $result;
     }
 }

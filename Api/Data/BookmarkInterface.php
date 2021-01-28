@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Inchoo\ProductBookmark\Api\Data;
 
 interface BookmarkInterface
@@ -31,25 +33,25 @@ interface BookmarkInterface
 
     /**
      * @param int $id
-     * @return mixed
+     * @return BookmarkInterface
      */
     public function setId(int $id);
 
     /**
      * @param int $bookmarkListId
-     * @return mixed
+     * @return BookmarkInterface
      */
     public function setBookmarkListId(int $bookmarkListId);
 
     /**
      * @param int $productId
-     * @return mixed
+     * @return BookmarkInterface
      */
     public function setProductId(int $productId);
 
     /**
      * @param int $websiteId
-     * @return mixed
+     * @return BookmarkInterface
      */
     public function setWebsiteId(int $websiteId);
 }

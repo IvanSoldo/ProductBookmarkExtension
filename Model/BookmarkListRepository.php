@@ -12,6 +12,7 @@ use Inchoo\ProductBookmark\Api\Data\BookmarkSearchResultsInterfaceFactory;
 use Inchoo\ProductBookmark\Model\ResourceModel\BookmarkList\CollectionFactory;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -68,25 +69,25 @@ class BookmarkListRepository implements BookmarkListRepositoryInterface
 
     /**
      * @param int $bookmarkListId
-     * @return BookmarkListInterface|mixed
+     * @return BookmarkListInterface
      * @throws NoSuchEntityException
      */
-    public function getById(int $bookmarkListId)
+    public function getById(int $bookmarkListId): BookmarkListInterface
     {
         $bookmarkList = $this->bookmarkListModelFactory->create();
         $this->bookmarkListResource->load($bookmarkList, $bookmarkListId);
         if (!$bookmarkList->getId()) {
-            throw new NoSuchEntityException(__('Bookmark List with id "%1" does not exist.', $bookmarkList));
+            throw new NoSuchEntityException(__('Bookmark List does not exist.', $bookmarkList));
         }
         return $bookmarkList;
     }
 
     /**
      * @param BookmarkListInterface $bookmarkList
-     * @return BookmarkListInterface|mixed
+     * @return BookmarkListInterface
      * @throws CouldNotSaveException
      */
-    public function save(BookmarkListInterface $bookmarkList)
+    public function save(BookmarkListInterface $bookmarkList): BookmarkListInterface
     {
         try {
             $this->bookmarkListResource->save($bookmarkList);
@@ -98,10 +99,10 @@ class BookmarkListRepository implements BookmarkListRepositoryInterface
 
     /**
      * @param BookmarkListInterface $bookmarkList
-     * @return bool|mixed
+     * @return bool
      * @throws CouldNotDeleteException
      */
-    public function delete(BookmarkListInterface $bookmarkList)
+    public function delete(BookmarkListInterface $bookmarkList): bool
     {
         try {
             $this->bookmarkListResource->delete($bookmarkList);
@@ -113,9 +114,9 @@ class BookmarkListRepository implements BookmarkListRepositoryInterface
 
     /**
      * @param SearchCriteriaInterface $searchCriteria
-     * @return \Inchoo\ProductBookmark\Api\Data\BookmarkSearchResultsInterface|mixed
+     * @return \Inchoo\ProductBookmark\Api\Data\BookmarkSearchResultsInterface
      */
-    public function getList(SearchCriteriaInterface $searchCriteria)
+    public function getList(SearchCriteriaInterface $searchCriteria): SearchResultsInterface
     {
         $collection = $this->bookmarkListCollectionFactory->create();
         $this->collectionProcessor->process($searchCriteria, $collection);

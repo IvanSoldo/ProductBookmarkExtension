@@ -8,12 +8,12 @@ use Inchoo\ProductBookmark\Api\BookmarkListRepositoryInterface;
 use Inchoo\ProductBookmark\Controller\Bookmark;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Controller\ResultInterface;
 
 class Delete extends Bookmark
 {
-
+    /**
+     * @var BookmarkListRepositoryInterface
+     */
     private $bookmarkListRepository;
 
     /**
@@ -32,12 +32,18 @@ class Delete extends Bookmark
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     * @return \Magento\Framework\View\Result\Page
      */
     public function execute()
     {
+        $id = (int)$this->getRequest()->getParam('id');
+
+        if (!$id) {
+            return $this->redirectToList();
+        }
+
         try {
-            $bookmarkList = $this->bookmarkListRepository->getById((int)$this->getRequest()->getParam('id'));
+            $bookmarkList = $this->bookmarkListRepository->getById($id);
         } catch (\Exception $exception) {
             $this->messageManager->addErrorMessage(__('Something went wrong!'));
             return $this->redirectToList();
@@ -45,11 +51,6 @@ class Delete extends Bookmark
 
         if (!$this->checkOwner((int)$bookmarkList->getCustomerId())) {
             $this->messageManager->addErrorMessage(__('Something went wrong!'));
-            return $this->redirectToList();
-        }
-
-        if ($bookmarkList->getIsDeletable() == false) {
-            $this->messageManager->addErrorMessage(__('Default list cannot be deleted!'));
             return $this->redirectToList();
         }
 

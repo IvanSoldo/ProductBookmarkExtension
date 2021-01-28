@@ -8,9 +8,13 @@ use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Controller\ResultFactory;
 
 abstract class Bookmark extends Action
 {
+    /**
+     * @var Session
+     */
     protected $customerSession;
 
     /**
@@ -40,12 +44,7 @@ abstract class Bookmark extends Action
      */
     protected function checkOwner(int $id)
     {
-        $customerId = (int)$this->customerSession->getId();
-        if ($id !== $customerId) {
-            $this->messageManager->addErrorMessage(__('Something went wrong!'));
-            return false;
-        }
-        return true;
+        return (bool)$id == $this->customerSession->getId();
     }
 
     /**

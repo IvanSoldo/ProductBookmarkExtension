@@ -9,34 +9,34 @@ use Inchoo\ProductBookmark\Api\Data\BookmarkListInterfaceFactory;
 use Inchoo\ProductBookmark\Controller\Bookmark;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\Data\Form\FormKey\Validator;
 
 class NewAction extends Bookmark
 {
 
-    private $validator;
-
+    /**
+     * @var BookmarkListInterfaceFactory
+     */
     private $bookmarkListModelFactory;
 
+    /**
+     * @var BookmarkListRepositoryInterface
+     */
     private $bookmarkListRepository;
 
     /**
      * NewAction constructor.
      * @param Context $context
      * @param Session $customerSession
-     * @param Validator $validator
      * @param BookmarkListInterfaceFactory $bookmarkListModelFactory
      * @param BookmarkListRepositoryInterface $bookmarkListRepository
      */
     public function __construct(
         Context $context,
         Session $customerSession,
-        Validator $validator,
         BookmarkListInterfaceFactory $bookmarkListModelFactory,
         BookmarkListRepositoryInterface $bookmarkListRepository
     ) {
         parent::__construct($context, $customerSession);
-        $this->validator = $validator;
         $this->bookmarkListModelFactory = $bookmarkListModelFactory;
         $this->bookmarkListRepository = $bookmarkListRepository;
     }
@@ -46,15 +46,11 @@ class NewAction extends Bookmark
      */
     public function execute()
     {
-        if (!$this->validator->validate($this->getRequest())) {
-            return $this->redirectToList();
-        }
-
         try {
             $customerId = (int)$this->customerSession->getId();
             $title = $this->_request->getParam('title');
 
-            if (empty($title)) {
+            if (!$title) {
                 $this->messageManager->addErrorMessage('Title must not be empty!');
                 return $this->redirectToList();
             }

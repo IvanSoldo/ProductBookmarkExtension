@@ -13,13 +13,7 @@ use Magento\Framework\View\Result\Layout;
 class Index extends Action
 {
 
-    /**
-     * @return bool
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Inchoo_ProductBookmark::productbookmark');
-    }
+    public const ADMIN_RESOURCE = 'Inchoo_ProductBookmark::productbookmark';
 
     /**
      * @return ResponseInterface|ResultInterface|Layout

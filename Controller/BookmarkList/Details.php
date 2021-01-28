@@ -12,6 +12,9 @@ use Magento\Framework\Controller\ResultFactory;
 
 class Details extends Bookmark
 {
+    /**
+     * @var BookmarkListRepositoryInterface
+     */
     private $bookmarkListRepository;
 
     /**
@@ -34,9 +37,14 @@ class Details extends Bookmark
      */
     public function execute()
     {
+        $id = (int)$this->getRequest()->getParam('id');
+
+        if (!$id) {
+            return $this->redirectToList();
+        }
 
         try {
-            $bookmarkList = $this->bookmarkListRepository->getById((int)$this->getRequest()->getParam('id'));
+            $bookmarkList = $this->bookmarkListRepository->getById($id);
         } catch (\Exception $exception) {
             $this->messageManager->addErrorMessage(__('Something went wrong!'));
             return $this->redirectToList();

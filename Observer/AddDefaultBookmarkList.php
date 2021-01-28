@@ -12,8 +12,14 @@ use Magento\Framework\Event\ObserverInterface;
 class AddDefaultBookmarkList implements ObserverInterface
 {
 
+    /**
+     * @var BookmarkListInterfaceFactory
+     */
     private $bookmarkListModelFactory;
 
+    /**
+     * @var BookmarkListRepositoryInterface
+     */
     private $bookmarkListRepository;
 
     /**

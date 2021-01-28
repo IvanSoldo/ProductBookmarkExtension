@@ -37,7 +37,7 @@ class BookmarkList extends AbstractModel implements BookmarkListInterface
     }
 
     /**
-     * @return int
+     * @return mixed
      */
     public function getCustomerId()
     {
@@ -54,7 +54,7 @@ class BookmarkList extends AbstractModel implements BookmarkListInterface
 
     /**
      * @param int|mixed $id
-     * @return BookmarkList|mixed
+     * @return BookmarkListInterface
      */
     public function setId($id)
     {
@@ -63,7 +63,7 @@ class BookmarkList extends AbstractModel implements BookmarkListInterface
 
     /**
      * @param string $title
-     * @return BookmarkList|mixed
+     * @return BookmarkListInterface
      */
     public function setBookmarkListTitle(string $title)
     {
@@ -72,7 +72,7 @@ class BookmarkList extends AbstractModel implements BookmarkListInterface
 
     /**
      * @param int $customerId
-     * @return BookmarkList|mixed
+     * @return BookmarkListInterface
      */
     public function setCustomerId(int $customerId)
     {

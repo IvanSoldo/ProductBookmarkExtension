@@ -12,8 +12,14 @@ use Magento\Ui\DataProvider\AbstractDataProvider;
 class DataProvider extends AbstractDataProvider
 {
 
+    /**
+     * @var BookmarkCollectionFactory
+     */
     private $bookmarkCollectionFactory;
 
+    /**
+     * @var CollectionFactory
+     */
     private $productCollectionFactory;
 
     /**

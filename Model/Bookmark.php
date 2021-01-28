@@ -21,7 +21,7 @@ class Bookmark extends AbstractModel implements BookmarkInterface
     }
 
     /**
-     * @return array|int|mixed|null
+     * @return int
      */
     public function getId()
     {
@@ -29,7 +29,7 @@ class Bookmark extends AbstractModel implements BookmarkInterface
     }
 
     /**
-     * @return array|int|mixed|null
+     * @return int
      */
     public function getBookmarkListId()
     {
@@ -37,7 +37,7 @@ class Bookmark extends AbstractModel implements BookmarkInterface
     }
 
     /**
-     * @return array|int|mixed|null
+     * @return int
      */
     public function getProductId()
     {
@@ -45,7 +45,7 @@ class Bookmark extends AbstractModel implements BookmarkInterface
     }
 
     /**
-     * @return array|int|mixed|null
+     * @return int
      */
     public function getWebsiteId()
     {
@@ -53,8 +53,8 @@ class Bookmark extends AbstractModel implements BookmarkInterface
     }
 
     /**
-     * @param int|mixed $id
-     * @return Bookmark|mixed
+     * @param int
+     * @return BookmarkInterface
      */
     public function setId($id)
     {
@@ -63,27 +63,27 @@ class Bookmark extends AbstractModel implements BookmarkInterface
 
     /**
      * @param int $bookmarkListId
-     * @return Bookmark|mixed
+     * @return BookmarkInterface
      */
-    public function setBookmarkListId(int $bookmarkListId)
+    public function setBookmarkListId(int $bookmarkListId): BookmarkInterface
     {
         return $this->setData(self::BOOKMARK_LIST_ID, $bookmarkListId);
     }
 
     /**
      * @param int $productId
-     * @return Bookmark|mixed
+     * @return BookmarkInterface
      */
-    public function setProductId(int $productId)
+    public function setProductId(int $productId): BookmarkInterface
     {
         return $this->setData(self::PRODUCT_ID, $productId);
     }
 
     /**
      * @param int $websiteId
-     * @return Bookmark|mixed
+     * @return BookmarkInterface
      */
-    public function setWebsiteId(int $websiteId)
+    public function setWebsiteId(int $websiteId): BookmarkInterface
     {
         return $this->setData(self::WEBSITE_ID, $websiteId);
     }

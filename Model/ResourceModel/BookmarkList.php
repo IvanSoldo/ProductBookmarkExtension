@@ -16,6 +16,6 @@ class BookmarkList extends AbstractDb
      */
     protected function _construct()
     {
-        $this->_init('inchoo_bookmark_list', 'bookmark_list_id');
+        $this->_init('inchoo_product_bookmark_list', 'bookmark_list_id');
     }
 }

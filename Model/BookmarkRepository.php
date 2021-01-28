@@ -11,6 +11,7 @@ use Inchoo\ProductBookmark\Api\Data\BookmarkSearchResultsInterface;
 use Inchoo\ProductBookmark\Api\Data\BookmarkSearchResultsInterfaceFactory;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -67,25 +68,25 @@ class BookmarkRepository implements BookmarkRepositoryInterface
 
     /**
      * @param int $bookmarkId
-     * @return BookmarkInterface|mixed
+     * @return BookmarkInterface
      * @throws NoSuchEntityException
      */
-    public function getById(int $bookmarkId)
+    public function getById(int $bookmarkId): BookmarkInterface
     {
         $bookmark = $this->bookmarkModelFactory->create();
         $this->bookmarkResource->load($bookmark, $bookmarkId);
         if (!$bookmark->getId()) {
-            throw new NoSuchEntityException(__('Bookmark with id "%1" does not exist.', $bookmark));
+            throw new NoSuchEntityException(__('Bookmark does not exist.', $bookmark));
         }
         return $bookmark;
     }
 
     /**
      * @param BookmarkInterface $bookmark
-     * @return BookmarkInterface|mixed
+     * @return BookmarkInterface
      * @throws CouldNotSaveException
      */
-    public function save(BookmarkInterface $bookmark)
+    public function save(BookmarkInterface $bookmark): BookmarkInterface
     {
         try {
             $this->bookmarkResource->save($bookmark);
@@ -97,10 +98,10 @@ class BookmarkRepository implements BookmarkRepositoryInterface
 
     /**
      * @param BookmarkInterface $bookmark
-     * @return bool|mixed
+     * @return bool
      * @throws CouldNotDeleteException
      */
-    public function delete(BookmarkInterface $bookmark)
+    public function delete(BookmarkInterface $bookmark): bool
     {
         try {
             $this->bookmarkResource->delete($bookmark);
@@ -114,7 +115,7 @@ class BookmarkRepository implements BookmarkRepositoryInterface
      * @param SearchCriteriaInterface $searchCriteria
      * @return BookmarkSearchResultsInterface|mixed
      */
-    public function getList(SearchCriteriaInterface $searchCriteria)
+    public function getList(SearchCriteriaInterface $searchCriteria): SearchResultsInterface
     {
         $collection = $this->bookmarkCollectionFactory->create();
         $this->collectionProcessor->process($searchCriteria, $collection);

@@ -10,34 +10,34 @@ use Inchoo\ProductBookmark\Controller\Bookmark;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Data\Form\FormKey\Validator;
 
 class Delete extends Bookmark
 {
+    /**
+     * @var BookmarkRepositoryInterface
+     */
     private $bookmarkRepository;
 
-    private $validator;
-
+    /**
+     * @var BookmarkListRepositoryInterface
+     */
     private $bookmarkListRepository;
 
     /**
      * Delete constructor.
      * @param Context $context
      * @param Session $customerSession
-     * @param Validator $validator
      * @param BookmarkRepositoryInterface $bookmarkRepository
      * @param BookmarkListRepositoryInterface $bookmarkListRepository
      */
     public function __construct(
         Context $context,
         Session $customerSession,
-        Validator $validator,
         BookmarkRepositoryInterface $bookmarkRepository,
         BookmarkListRepositoryInterface $bookmarkListRepository
     ) {
         parent::__construct($context, $customerSession);
         $this->bookmarkRepository = $bookmarkRepository;
-        $this->validator = $validator;
         $this->bookmarkListRepository = $bookmarkListRepository;
     }
 
@@ -46,22 +46,15 @@ class Delete extends Bookmark
      */
     public function execute()
     {
-        if (!$this->validator->validate($this->getRequest())) {
+        $bookmarkId = (int)$this->getRequest()->getParam('bookmarkId');
+
+        if (!$bookmarkId) {
             return $this->redirectToList();
         }
-
-        $bookmarkId = (int)$this->getRequest()->getParam('bookmarkId');
 
         try {
             $bookmark = $this->bookmarkRepository->getById($bookmarkId);
-        } catch (\Exception $exception) {
-            $this->messageManager->addErrorMessage(__('Something went wrong!'));
-            return $this->redirectToList();
-        }
-
-        $bookmarkListId = (int)$bookmark->getBookmarkListId();
-
-        try {
+            $bookmarkListId = (int)$bookmark->getBookmarkListId();
             $bookmarkList = $this->bookmarkListRepository->getById($bookmarkListId);
         } catch (\Exception $exception) {
             $this->messageManager->addErrorMessage(__('Something went wrong!'));

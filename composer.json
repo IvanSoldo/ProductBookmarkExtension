@@ -4,7 +4,13 @@
   "description": "N/A",
   "type": "magento2-module",
   "require": {
-    "magento/framework": "*"
+      "php": "~7.3.0|~7.4.0",
+      "magento/framework": "",
+      "magento/module-backend": "",
+      "magento/module-customer": "",
+      "magento/module-catalog": "",
+      "magento/module-ui": "",
+      "magento/module-store": ""
   },
   "license": [
     "Proprietary"

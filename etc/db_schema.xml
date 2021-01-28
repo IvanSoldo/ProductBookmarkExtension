@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-    <table name="inchoo_bookmark_list" resource="default" comment="Inchoo Product Bookmark List" charset="utf8" collation="utf8_general_ci">
+    <table name="inchoo_product_bookmark_list" resource="default" comment="Inchoo Product Bookmark List" charset="utf8" collation="utf8_general_ci">
         <column name="bookmark_list_id" xsi:type="int" unsigned="true" identity="true" comment="Bookmark List ID" nullable="false"/>
         <column name="bookmark_list_title" xsi:type="varchar" nullable="false" length="124" comment="Bookmark List Title"/>
         <column name="is_deletable" xsi:type="boolean" nullable="false" default="true" comment="Is the list deletable"/>
@@ -17,7 +17,7 @@
                     onDelete="CASCADE"/>
     </table>
 
-    <table name="inchoo_bookmark" resource="default" comment="Inchoo Product Bookmark" charset="utf8" collation="utf8_general_ci">
+    <table name="inchoo_product_bookmark" resource="default" comment="Inchoo Product Bookmark" charset="utf8" collation="utf8_general_ci">
         <column name="bookmark_id" xsi:type="int" unsigned="true" identity="true" comment="Bookmark List ID" nullable="false"/>
         <column name="bookmark_list_id" xsi:type="int" unsigned="true" identity="false" comment="Bookmark List ID" nullable="false"/>
         <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false"
@@ -29,7 +29,7 @@
             <column name="bookmark_id"/>
         </constraint>
         <constraint xsi:type="foreign" referenceId="TMP" column="bookmark_list_id"
-                    referenceTable="inchoo_bookmark_list" referenceColumn="bookmark_list_id"
+                    referenceTable="inchoo_product_bookmark_list" referenceColumn="bookmark_list_id"
                     onDelete="CASCADE"/>
         <constraint xsi:type="foreign" referenceId="TMP2" column="product_id"
                     referenceTable="catalog_product_entity" referenceColumn="entity_id"

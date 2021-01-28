@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Inchoo\ProductBookmark\Api\Data;
 
 interface BookmarkListInterface
@@ -10,46 +12,46 @@ interface BookmarkListInterface
     const IS_DELETABLE = 'is_deletable';
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBookmarkListTitle();
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getCustomerId();
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getIsDeletable();
 
     /**
      * @param int $id
-     * @return mixed
+     * @return BookmarkListInterface
      */
     public function setId(int $id);
 
     /**
      * @param string $title
-     * @return mixed
+     * @return BookmarkListInterface
      */
     public function setBookmarkListTitle(string $title);
 
     /**
      * @param int $customerId
-     * @return mixed
+     * @return BookmarkListInterface
      */
     public function setCustomerId(int $customerId);
 
     /**
      * @param bool $isDeletable
-     * @return mixed
+     * @return BookmarkListInterface
      */
     public function setIsDeletable(bool $isDeletable);
 }
