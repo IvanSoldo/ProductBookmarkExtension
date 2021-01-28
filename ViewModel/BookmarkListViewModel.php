@@ -46,7 +46,7 @@ class BookmarkListViewModel implements ArgumentInterface
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getBookmarkLists()
     {
