@@ -10,6 +10,7 @@ use Inchoo\ProductBookmark\Controller\Bookmark;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 class Delete extends Bookmark
 {
@@ -22,6 +23,10 @@ class Delete extends Bookmark
      * @var BookmarkListRepositoryInterface
      */
     private $bookmarkListRepository;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * Delete constructor.
@@ -29,16 +34,19 @@ class Delete extends Bookmark
      * @param Session $customerSession
      * @param BookmarkRepositoryInterface $bookmarkRepository
      * @param BookmarkListRepositoryInterface $bookmarkListRepository
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         Context $context,
         Session $customerSession,
         BookmarkRepositoryInterface $bookmarkRepository,
-        BookmarkListRepositoryInterface $bookmarkListRepository
+        BookmarkListRepositoryInterface $bookmarkListRepository,
+        \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context, $customerSession);
         $this->bookmarkRepository = $bookmarkRepository;
         $this->bookmarkListRepository = $bookmarkListRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -57,16 +65,23 @@ class Delete extends Bookmark
             $bookmarkListId = (int)$bookmark->getBookmarkListId();
             $bookmarkList = $this->bookmarkListRepository->getById($bookmarkListId);
         } catch (\Exception $exception) {
-            $this->messageManager->addErrorMessage(__('Something went wrong!'));
+            $this->messageManager->addErrorMessage(__('Something went wrong! Please contact customer support.'));
             return $this->redirectToList();
         }
 
         if (!$this->checkOwner((int)$bookmarkList->getCustomerId())) {
-            $this->messageManager->addErrorMessage(__('Something went wrong!'));
+            $this->messageManager->addErrorMessage(__('Something went wrong! Please contact customer support.'));
             return $this->redirectToList();
         }
 
-        $this->bookmarkRepository->delete($bookmark);
+        try {
+            $this->bookmarkRepository->delete($bookmark);
+        } catch (LocalizedException $e) {
+            $this->logger->critical('Error message', ['exception' => $e]);
+            $this->messageManager->addErrorMessage(__('Something went wrong! Please contact customer support.'));
+            return $this->redirectToList();
+
+        }
         $this->messageManager->addSuccessMessage('Bookmark removed!');
         return $this->redirectToList();
     }

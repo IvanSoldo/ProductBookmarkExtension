@@ -47,6 +47,10 @@ class Save extends Bookmark
      * @var BookmarkListInterfaceFactory
      */
     private $bookmarkListModelFactory;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * Save constructor.
@@ -58,6 +62,7 @@ class Save extends Bookmark
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param BookmarkListRepositoryInterface $bookmarkListRepository
      * @param BookmarkListInterfaceFactory $bookmarkListModelFactory
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         Context $context,
@@ -67,7 +72,8 @@ class Save extends Bookmark
         StoreManagerInterface $storeManager,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         BookmarkListRepositoryInterface $bookmarkListRepository,
-        BookmarkListInterfaceFactory $bookmarkListModelFactory
+        BookmarkListInterfaceFactory $bookmarkListModelFactory,
+        \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context, $customerSession);
         $this->bookmarkRepository = $bookmarkRepository;
@@ -76,6 +82,7 @@ class Save extends Bookmark
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->bookmarkListRepository = $bookmarkListRepository;
         $this->bookmarkListModelFactory = $bookmarkListModelFactory;
+        $this->logger = $logger;
     }
 
     /**
@@ -98,7 +105,7 @@ class Save extends Bookmark
             try {
                 $bookmarkList = $this->bookmarkListRepository->getById($bookmarkListId);
             } catch (\Exception $exception) {
-                $this->messageManager->addErrorMessage(__('Product could not be saved!'));
+                $this->messageManager->addErrorMessage(__('Product could not be saved! Please contact customer support.'));
                 return $this->redirectToList();
             }
         }
@@ -114,13 +121,14 @@ class Save extends Bookmark
         }
 
         if (!$this->checkOwner((int)$bookmarkList->getCustomerId())) {
-            $this->messageManager->addErrorMessage(__('Product could not be bookmarked!'));
+            $this->messageManager->addErrorMessage(__('Product could not be bookmarked! Please contact customer support.'));
             return $this->redirectToList();
         }
 
         try {
             $this->bookmarkRepository->save($bookmark);
         } catch (\Exception $exception) {
+            $this->logger->critical('Error message', ['exception' => $exception]);
             $this->messageManager->addErrorMessage(__('Product could not be bookmarked!'));
             return $this->redirectToList();
         }

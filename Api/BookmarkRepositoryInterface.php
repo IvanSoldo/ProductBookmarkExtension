@@ -14,24 +14,28 @@ interface BookmarkRepositoryInterface
     /**
      * @param int $bookmarkId
      * @return BookmarkInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getById(int $bookmarkId): BookmarkInterface;
 
     /**
      * @param BookmarkInterface $bookmark
      * @return BookmarkInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function save(BookmarkInterface $bookmark): BookmarkInterface;
 
     /**
      * @param BookmarkInterface $bookmark
      * @return bool
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function delete(BookmarkInterface $bookmark): bool;
 
     /**
      * @param SearchCriteriaInterface $searchCriteria
      * @return \Inchoo\ProductBookmark\Api\Data\BookmarkSearchResultsInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getList(SearchCriteriaInterface $searchCriteria): SearchResultsInterface;
 }

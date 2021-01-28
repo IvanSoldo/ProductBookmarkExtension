@@ -113,7 +113,7 @@ class BookmarkRepository implements BookmarkRepositoryInterface
 
     /**
      * @param SearchCriteriaInterface $searchCriteria
-     * @return BookmarkSearchResultsInterface|mixed
+     * @return BookmarkSearchResultsInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria): SearchResultsInterface
     {

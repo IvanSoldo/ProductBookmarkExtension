@@ -16,20 +16,27 @@ class Details extends Bookmark
      * @var BookmarkListRepositoryInterface
      */
     private $bookmarkListRepository;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * Details constructor.
      * @param Context $context
      * @param Session $customerSession
      * @param BookmarkListRepositoryInterface $bookmarkListRepository
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         Context $context,
         Session $customerSession,
-        BookmarkListRepositoryInterface $bookmarkListRepository
+        BookmarkListRepositoryInterface $bookmarkListRepository,
+        \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context, $customerSession);
         $this->bookmarkListRepository = $bookmarkListRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -46,12 +53,13 @@ class Details extends Bookmark
         try {
             $bookmarkList = $this->bookmarkListRepository->getById($id);
         } catch (\Exception $exception) {
-            $this->messageManager->addErrorMessage(__('Something went wrong!'));
+            $this->messageManager->addErrorMessage(__('Something went wrong! Please contact customer support.'));
+            $this->logger->critical('Error message', ['exception' => $exception]);
             return $this->redirectToList();
         }
 
         if (!$this->checkOwner((int)$bookmarkList->getCustomerId())) {
-            $this->messageManager->addErrorMessage(__('Something went wrong!'));
+            $this->messageManager->addErrorMessage(__('Something went wrong! Please contact customer support.'));
             return $this->redirectToList();
         }
 

@@ -22,6 +22,10 @@ class NewAction extends Bookmark
      * @var BookmarkListRepositoryInterface
      */
     private $bookmarkListRepository;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * NewAction constructor.
@@ -29,16 +33,19 @@ class NewAction extends Bookmark
      * @param Session $customerSession
      * @param BookmarkListInterfaceFactory $bookmarkListModelFactory
      * @param BookmarkListRepositoryInterface $bookmarkListRepository
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         Context $context,
         Session $customerSession,
         BookmarkListInterfaceFactory $bookmarkListModelFactory,
-        BookmarkListRepositoryInterface $bookmarkListRepository
+        BookmarkListRepositoryInterface $bookmarkListRepository,
+        \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context, $customerSession);
         $this->bookmarkListModelFactory = $bookmarkListModelFactory;
         $this->bookmarkListRepository = $bookmarkListRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -62,7 +69,8 @@ class NewAction extends Bookmark
 
             $this->messageManager->addSuccessMessage(__('Bookmark List created!'));
         } catch (\Exception $exception) {
-            $this->messageManager->addErrorMessage(__('Bookmark List not saved!'));
+            $this->logger->critical('Error message', ['exception' => $exception]);
+            $this->messageManager->addErrorMessage(__('Bookmark List not saved! Please contact customer support.'));
         }
         return $this->redirectToList();
     }
