@@ -13,7 +13,7 @@
         </tr>
         <?php foreach ($block->getBookmarkedProducts() as $key => $product) : ?>
             <tr>
-                <td><?= $block->escapeHtml($product->getName()) ?></td>
+                <td><?= $block->escapeHtml($product['productName']) ?></td>
                 <td>
                     <form
                         action="<?= $block->escapeUrl($block->getUrl("inchoo_bookmark/bookmark/delete")) ?>"

@@ -4,51 +4,40 @@ declare(strict_types=1);
 
 namespace Inchoo\ProductBookmark\Block\BookmarkList;
 
-use Inchoo\ProductBookmark\Api\BookmarkRepositoryInterface;
 use Inchoo\ProductBookmark\Api\Data\BookmarkInterface;
+use Inchoo\ProductBookmark\Model\ResourceModel\Bookmark\CollectionFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\View\Element\Template;
 
 class Details extends Template
 {
 
     /**
-     * @var BookmarkRepositoryInterface
-     */
-    private $bookmarkRepository;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /**
      * @var ProductRepositoryInterface
      */
     private $productRepository;
+    /**
+     * @var CollectionFactory
+     */
+    private $bookmarkCollectionFactory;
 
     /**
      * Details constructor.
-     * @param BookmarkRepositoryInterface $bookmarkRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param ProductRepositoryInterface $productRepository
+     * @param CollectionFactory $bookmarkCollectionFactory
      * @param Template\Context $context
      * @param array $data
      */
     public function __construct(
-        BookmarkRepositoryInterface $bookmarkRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
         ProductRepositoryInterface $productRepository,
+        CollectionFactory $bookmarkCollectionFactory,
         Template\Context $context,
         array $data = []
     ) {
-        $this->bookmarkRepository = $bookmarkRepository;
         parent::__construct($context, $data);
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->productRepository = $productRepository;
+        $this->bookmarkCollectionFactory = $bookmarkCollectionFactory;
     }
-
 
     /**
      * @return array
@@ -56,15 +45,21 @@ class Details extends Template
      */
     public function getBookmarkedProducts()
     {
-        $this->searchCriteriaBuilder
-            ->addFilter(BookmarkInterface::BOOKMARK_LIST_ID, (int)$this->getRequest()->getParam('id'), 'eq')
-            ->addFilter(BookmarkInterface::WEBSITE_ID, $this->_storeManager->getStore()->getWebsiteId(), 'eq');
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        $bookmarks = $this->bookmarkRepository->getList($searchCriteria)->getItems();
-        $products = [];
-        foreach ($bookmarks as $bookmark) {
-            $products += [$bookmark->getId() => $this->productRepository->getById($bookmark->getProductId())];
-        }
+        $products = $this->bookmarkCollectionFactory->create();
+        $products
+            ->addFieldToSelect('product_id')
+            ->addFieldToSelect('bookmark_id')
+            ->addFieldToFilter(
+                'bookmark_list_id',
+                ['eq' => (int)$this->getRequest()->getParam('id')]
+            )->addFieldToFilter(
+                BookmarkInterface::WEBSITE_ID,
+                ['eq' => $this->_storeManager->getStore()->getWebsiteId()]
+            )->getSelect()->join(
+                ['product' => 'catalog_product_entity_varchar'],
+                'main_table.product_id = product.entity_id',
+                'product.value as productName'
+            )->group('bookmark_id');
         return $products;
     }
 }
