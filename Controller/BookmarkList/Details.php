@@ -6,7 +6,7 @@ namespace Inchoo\ProductBookmark\Controller\BookmarkList;
 
 use Inchoo\ProductBookmark\Api\BookmarkListRepositoryInterface;
 use Inchoo\ProductBookmark\Controller\Bookmark;
-use Magento\Customer\Model\Session;
+use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\ResultFactory;
 
@@ -20,12 +20,12 @@ class Details extends Bookmark
     /**
      * Details constructor.
      * @param Context $context
-     * @param Session $customerSession
+     * @param Proxy $customerSession
      * @param BookmarkListRepositoryInterface $bookmarkListRepository
      */
     public function __construct(
         Context $context,
-        Session $customerSession,
+        Proxy $customerSession,
         BookmarkListRepositoryInterface $bookmarkListRepository
     ) {
         parent::__construct($context, $customerSession);
