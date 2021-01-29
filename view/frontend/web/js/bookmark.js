@@ -5,18 +5,19 @@ define([
     'use strict';
 
     let isLoggedIn = function () {
-        var customer = customerData.get('customer')();
-        if (customer.fullname && customer.firstname) {
+        let customer = customerData.get('customer')();
+        if (customer.firstname) {
             return true;
         }
         return false;
     };
 
     return function (config, element) {
-
         if (isLoggedIn()) {
-            $.get({
+            jQuery.ajax({
+                type: 'POST',
                 url: '/inchoo_bookmark/block',
+                dataType: 'text',
                 success: function (result) {
                     element.innerHTML = result;
                     let productId = document.getElementById('product');
@@ -24,6 +25,5 @@ define([
                 }
             });
         }
-
     }
 });
