@@ -22,6 +22,7 @@ class NewAction extends Bookmark
      * @var BookmarkListRepositoryInterface
      */
     private $bookmarkListRepository;
+
     /**
      * @var \Psr\Log\LoggerInterface
      */

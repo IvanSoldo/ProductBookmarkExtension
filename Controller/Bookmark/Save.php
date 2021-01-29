@@ -14,9 +14,9 @@ use Inchoo\ProductBookmark\Controller\Bookmark;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\Controller\ResultFactory;
 
 class Save extends Bookmark
 {
@@ -44,10 +44,12 @@ class Save extends Bookmark
      * @var BookmarkListRepositoryInterface
      */
     private $bookmarkListRepository;
+
     /**
      * @var BookmarkListInterfaceFactory
      */
     private $bookmarkListModelFactory;
+
     /**
      * @var \Psr\Log\LoggerInterface
      */
@@ -106,7 +108,8 @@ class Save extends Bookmark
             try {
                 $bookmarkList = $this->bookmarkListRepository->getById($bookmarkListId);
             } catch (\Exception $exception) {
-                $this->messageManager->addErrorMessage(__('Product could not be saved! Please contact customer support.'));
+                $this->messageManager
+                    ->addErrorMessage(__('Product could not be saved! Please contact customer support.'));
                 return $this->redirectToList();
             }
         }
@@ -122,7 +125,8 @@ class Save extends Bookmark
         }
 
         if (!$this->checkOwner((int)$bookmarkList->getCustomerId())) {
-            $this->messageManager->addErrorMessage(__('Product could not be bookmarked! Please contact customer support.'));
+            $this->messageManager
+                ->addErrorMessage(__('Product could not be bookmarked! Please contact customer support.'));
             return $this->redirectToList();
         }
 

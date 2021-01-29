@@ -16,7 +16,6 @@ class DataProvider extends AbstractDataProvider
      */
     private $bookmarkCollectionFactory;
 
-
     /**
      * DataProvider constructor.
      * @param string $name
@@ -39,11 +38,11 @@ class DataProvider extends AbstractDataProvider
     }
 
     /**
-     * @return array|void
+     * @return array
      */
     public function getData()
     {
-        return $this->getCollection()->getProducts()->toArray();
+        return $this->getCollection()->addProductData()->toArray();
     }
 
     /**

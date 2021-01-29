@@ -8,7 +8,7 @@ $bookmarkLists = $viewModel->getBookmarkLists();
     <?= $block->getBlockHtml('formkey') ?>
     <br>
     <br>
-    <?php if (!empty($bookmarkLists)): ?>
+    <?php if (!empty($bookmarkLists)) : ?>
     <select name="bookmarkList" data-toggle="dropdown">
         <?php foreach ($bookmarkLists as $bookmarkList) : ?>
             <option value="<?=$block->escapeHtml($bookmarkList->getId())?>"><?=$block->escapeHtml($bookmarkList->getBookmarkListTitle())?></option>

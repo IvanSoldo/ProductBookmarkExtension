@@ -6,8 +6,7 @@ define([
 
     let isLoggedIn = function () {
         var customer = customerData.get('customer')();
-        if (customer.fullname && customer.firstname)
-        {
+        if (customer.fullname && customer.firstname) {
             return true;
         }
         return false;

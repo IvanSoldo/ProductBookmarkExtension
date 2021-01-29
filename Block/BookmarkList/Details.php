@@ -16,6 +16,7 @@ class Details extends Template
      * @var ProductRepositoryInterface
      */
     private $productRepository;
+
     /**
      * @var CollectionFactory
      */

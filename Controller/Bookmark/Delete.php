@@ -23,6 +23,7 @@ class Delete extends Bookmark
      * @var BookmarkListRepositoryInterface
      */
     private $bookmarkListRepository;
+
     /**
      * @var \Psr\Log\LoggerInterface
      */
@@ -80,7 +81,6 @@ class Delete extends Bookmark
             $this->logger->critical('Error message', ['exception' => $e]);
             $this->messageManager->addErrorMessage(__('Something went wrong! Please contact customer support.'));
             return $this->redirectToList();
-
         }
         $this->messageManager->addSuccessMessage('Bookmark removed!');
         return $this->redirectToList();

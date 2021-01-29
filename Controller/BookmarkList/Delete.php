@@ -16,6 +16,7 @@ class Delete extends Bookmark
      * @var BookmarkListRepositoryInterface
      */
     private $bookmarkListRepository;
+
     /**
      * @var \Psr\Log\LoggerInterface
      */
