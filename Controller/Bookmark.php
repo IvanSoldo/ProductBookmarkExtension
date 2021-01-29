@@ -44,7 +44,7 @@ abstract class Bookmark extends Action
      */
     protected function checkOwner(int $id)
     {
-        return (bool)$id == $this->customerSession->getId();
+        return $id == $this->customerSession->getId();
     }
 
     /**

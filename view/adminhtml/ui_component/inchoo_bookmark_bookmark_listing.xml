@@ -16,7 +16,7 @@
     <dataSource name="inchoo_bookmark_bookmark_listing_data_source" component="Magento_Ui/js/grid/provider">
         <settings>
             <storageConfig>
-                <param name="indexField" xsi:type="string">entity_id</param>
+                <param name="indexField" xsi:type="string">bookmark_id</param>
             </storageConfig>
             <updateUrl path="mui/index/render"/>
         </settings>
@@ -24,7 +24,7 @@
         <dataProvider class="Inchoo\ProductBookmark\Ui\Component\Listing\DataProvider" name="inchoo_bookmark_bookmark_listing_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
-                <primaryFieldName>entity_id</primaryFieldName>
+                <primaryFieldName>bookmark_id</primaryFieldName>
             </settings>
         </dataProvider>
     </dataSource>
@@ -38,22 +38,14 @@
         <paging name="listing_paging"/>
     </listingToolbar>
     <columns name="inchoo_bookmark_bookmark_columns">
-        <column name="entity_id">
+        <column name="Sku">
             <settings>
-                <filter>textRange</filter>
-                <label translate="true">ID</label>
-                <sorting>asc</sorting>
+                <label translate="true">Sku</label>
             </settings>
         </column>
-        <column name="sku">
+        <column name="count">
             <settings>
-                <filter>text</filter>
-                <label translate="true">SKU</label>
-            </settings>
-        </column>
-        <column name="bookmarkCounter">
-            <settings>
-                <label translate="false">No. of times bookmarked</label>
+                <label translate="true">No. of times bookmarked</label>
             </settings>
         </column>
     </columns>

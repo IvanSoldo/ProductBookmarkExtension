@@ -21,4 +21,18 @@ class Collection extends AbstractCollection
             \Inchoo\ProductBookmark\Model\ResourceModel\Bookmark::class
         );
     }
+
+    public function getProducts()
+    {
+        $this->getSelect()
+            ->join(
+                ['product' => 'catalog_product_entity'],
+                'main_table.product_id = product.entity_id',
+                'product.sku as Sku'
+            )
+            ->columns(['product_id', new \Zend_Db_Expr('COUNT(`main_table`.`product_id`) as count')])
+            ->group('main_table.product_id');
+
+        return $this;
+    }
 }
