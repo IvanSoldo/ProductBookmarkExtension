@@ -14,14 +14,16 @@ define([
 
     return function (config, element) {
         if (isLoggedIn()) {
+            let productId = config.product;
             jQuery.ajax({
                 type: 'POST',
                 url: '/inchoo_bookmark/block',
                 dataType: 'text',
+                data: {
+                    'product' : productId
+                },
                 success: function (result) {
                     element.innerHTML = result;
-                    let productId = document.getElementById('product');
-                    productId.value = config.product;
                 }
             });
         }

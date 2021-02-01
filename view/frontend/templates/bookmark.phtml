@@ -1,5 +1,5 @@
 <?php
-/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Inchoo\ProductBookmark\Block\Bookmark\Product $block */
 /** @var \Inchoo\ProductBookmark\ViewModel\BookmarkListViewModel $viewModel */
 $viewModel = $block->getData('view_model');
 $bookmarkLists = $viewModel->getBookmarkLists();
@@ -18,5 +18,5 @@ $bookmarkLists = $viewModel->getBookmarkLists();
     <br>
     <br>
     <input class="action submit primary" type="submit" value="Bookmark">
-    <input type="hidden" name="product" id="product">
+    <input type="hidden" name="product" value="<?=$block->escapeHtml($block->getProductId())?>">
 </form>
